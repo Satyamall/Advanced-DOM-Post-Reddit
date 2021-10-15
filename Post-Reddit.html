@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post-Reddit</title>
+    <style>
+        #comment-box {
+            width: 550px;
+            background-color: rgb(212, 212, 212);
+            margin: auto;
+            padding: 30px;
+            border-radius: 10px;
+            line-height: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="comment-box"></div>
+    <script>
+        const post = {
+            id: "001",
+            author: "albert",
+            body: "Whats the status?",
+            timestamp: "Sun Aug 02 2020 18:08:45 GMT+0530",
+            points: "2",
+            replies: [
+                {
+                    id: "003",
+                    author: "haren",
+                    body: "Wrote the test suites, waiting for approval?",
+                    timestamp: "Sun Aug 02 2020 18:12:45 GMT+0530",
+                    points: "3",
+                    replies: [
+                        {
+                            id: "004",
+                            author: "albert",
+                            body: "Thanks for the update!",
+                            timestamp: "Sun Aug 02 2020 18:15:45 GMT+0530",
+                            points: "8"
+                        }
+                    ]
+                },
+                {
+                    id: "002",
+                    author: "Nrupul",
+                    body: "looking forward for the demo!",
+                    timestamp: "Sun Aug 02 2020 18:10:45 GMT+0530",
+                    points: "2"
+                }
+            ]
+        };
+
+        function createComment(reply,parent) {
+            for(const c in reply){
+                const date = new Date();
+                const minutes = date.getMinutes();
+                const t1 = document.createElement("p");
+                t1.textContent = `${reply[c].author} ${reply[c].points} points ${minutes} minutes ago`;
+                t1.style.marginTop = "40px";
+                const t2 = document.createElement("h4");
+                t2.textContent = `${reply[c].body}`;
+                t2.style.fontSize = "15px"
+                const title = document.createElement("h3");
+                title.textContent = "Reply Give Award Share Report Save";
+                title.style.color = "rgb(145,145,145)";
+                title.style.fontSize ="18px"
+                const ul = document.createElement("ul");
+                ul.style.listStyleType = "none"; 
+                createComment(reply[c].replies,ul);
+                parent.append(t1,t2,title,ul);
+                parent.style.marginLeft="50px";
+            }
+            
+            
+        }
+
+        function createPost(post) {
+            const container = document.createElement("div");
+
+            const date = new Date();
+            const minutes = date.getMinutes();
+            const author = document.createElement("p");
+            const body = document.createElement("h4");
+            author.textContent = `${post.author} ${post.points} points ${minutes} minutes ago`;
+            body.textContent = post.body;
+            body.style.fontSize ="15px";
+
+            const title = document.createElement("h3");
+            title.textContent = "Reply Give Award Share Report Save";
+            title.style.color = "rgb(145,145,145)";
+            title.style.fontSize ="18px";
+            const commentsContainer = document.createElement("ul");
+            commentsContainer.style.listStyleType = "none"; 
+            createComment(post.replies,commentsContainer);
+
+            container.append(author,body,title,commentsContainer);
+            return container;
+        }
+        
+        const reply = createPost(post);
+        const commentBox = document.getElementById("comment-box");
+        commentBox.append(reply);
+    </script>
+</body>
+
+</html>
